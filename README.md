@@ -1,6 +1,6 @@
 # Deploy Django locally with Kubernetes (Minikube)
 
-### The desired state:
+## The desired state:
 
 <p align="center">
   <img src="desired_state.png" />
@@ -19,7 +19,7 @@ Other K8s components used:
 * emptyDir (for static content)
 * persistent volume and claim (for database storage)
 
-### Watch out!
+## Watch out!
 
 <p align="center">
   <img src="minikube_docker.png" />
@@ -37,15 +37,15 @@ eval $(minikube -p minikube docker-env)
 eval $(minikube docker-env --unset)
 ```
 
-### Deployment steps
+## Deployment steps
 
-* base64 encode secrets
+1. base64 encode secrets
 `echo -n postgresdb | base64`
 
-* check minikube is running
+2. check minikube is running
 `minikube status`
 
-* apply database templates
+3. apply database templates
 ```
 export LOC='/path/to/k8s/folder/'
 
@@ -55,13 +55,13 @@ kubectl apply -f $LOC/database/deployment.yaml
 kubectl apply -f $LOC/database/service.yaml
 ```
 
-* get the database local IP and place it in the application configmap
+4. get the database local IP and place it in the application configmap
 ```
 kubectl get services
 nano $LOC/application/configmap.yaml
 ```
 
-* apply application templates
+5. apply application templates
 ```
 kubectl apply -f $LOC/application/secret.yaml
 kubectl apply -f $LOC/application/configmap.yaml
@@ -69,7 +69,7 @@ kubectl apply -f $LOC/application/deployment.yaml
 kubectl apply -f $LOC/application/service.yaml
 ```
 
-* get the app pod name and exec into container to do database migration (optional)
+6. get the app pod name and exec into container to do database migration (optional)
 ```
 kubectl get pods
 kubectl exec -it <pod name> -- /bin/bash
@@ -77,9 +77,9 @@ python manage.py makemigrations
 python manage.py migrate
 ```
 
-* port forwarding to reach the Django app from your browser
+7. port forwarding to reach the Django app from your browser
 `kubectl port-forward service/<service name> <local port eg. 3000>:<container port eg. 80>`
 
 
-* tear down
+8. tear down
 `kubectl delete all --all`
