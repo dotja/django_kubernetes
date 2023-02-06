@@ -40,10 +40,14 @@ eval $(minikube docker-env --unset)
 ## Deployment steps
 
 1. base64 encode secrets
-`echo -n postgresdb | base64`
+```
+echo -n postgresdb | base64
+```
 
 2. check minikube is running
-`minikube status`
+```
+minikube status
+```
 
 3. apply database templates
 ```
@@ -78,8 +82,12 @@ python manage.py migrate
 ```
 
 7. port forwarding to reach the Django app from your browser
-`kubectl port-forward service/<service name> <local port eg. 3000>:<container port eg. 80>`
+```
+kubectl port-forward service/<service name> <local port eg. 3000>:<container port eg. 80>
+```
 
 
 8. tear down
-`kubectl delete all --all`
+```
+kubectl delete all --all
+```
